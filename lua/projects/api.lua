@@ -1,39 +1,31 @@
-local config = require("projects.config")
-local errors = require("projects.errors")
+local errors = require("projects.utils.errors")
+local state = require("projects.state")
 
----@class projects.API
----@field opts projects.UserConfig
-local API = {
+local M = {
+  --- Global plugin state.
+  ---
   ---@private
-  ---@type projects.State|?
-  persisted_state = nil,
+  ---@type projects.State
+  global_state = state.init(),
 }
 
 ---@param opts? projects.UserConfig
----@return projects.API
-function API.setup(opts)
-  local self = setmetatable({}, API)
-  self.opts = config.resolve_opts(opts)
-  return self
-end
+function M.setup(opts) M.global_state:resolve(opts) end
 
----@return projects.UserConfig
-function API:get_options() return vim.deepcopy(self.opts) end
-
----@param opts projects.RegisterProjectOpts
----@return boolean ok, string|? err
-function API:register_project(opts) return errors.TODO("register_project", self, opts) end
+---@param opts projects.AddProjectOpts
+---@return boolean ok, unknown|? err
+function M.add_project(opts) return pcall(M.global_state.add_project, M.global_state, opts) end
 
 ---@param opts projects.DeleteProjectOpts
----@return boolean ok, string|? err
-function API:delete_project(opts) return errors.TODO("delete_project", self, opts) end
+---@return boolean ok, unknown|? err
+function M.delete_project(opts) return pcall(M.global_state.delete_project, M.global_state, opts) end
 
 ---@param opts projects.EnterProjectDirectoryOpts|?
----@return boolean ok, string|? err
-function API:enter_project_directory(opts) return errors.TODO("enter_project_directory", self, opts) end
+---@return boolean ok, unknown|? err
+function M.enter_project_directory(opts) return errors.TODO("API.enter_project_directory", opts) end
 
 ---@param opts projects.GetRecentProjectsOpts|?
----@return boolean ok, string|? err
-function API:get_recent_projects(opts) return errors.TODO("get_recent_projects", self, opts) end
+---@return boolean ok, unknown|? err
+function M.get_recent_projects(opts) return errors.TODO("API.get_recent_projects", opts) end
 
-return API
+return M

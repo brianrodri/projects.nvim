@@ -1,10 +1,13 @@
 -- TODO: Define types.
---
----@class projects.UserConfig
----
----@class projects.RegisterProjectOpts
+
+---@alias projects.PathLike (string | projects.Path)
+
+---@class projects.AddProjectOpts
+
 ---@class projects.DeleteProjectOpts
+
 ---@class projects.GetRecentProjectsOpts
+
 ---@class projects.EnterProjectDirectoryOpts
----
+
 ---@class projects.State
